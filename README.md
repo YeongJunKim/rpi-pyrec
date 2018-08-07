@@ -1,1 +1,1 @@
-# rpi_pyrec
+# raspberrypi recording
