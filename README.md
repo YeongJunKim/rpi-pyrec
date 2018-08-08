@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # AIY-kit word save
 
 ###### recording
@@ -22,3 +23,7 @@
 ```angular2html
 ~$ amixer set Master 20%
 ```
+=======
+# raspberrypi recording
+# hello
+>>>>>>> 8680056d11dfbe23b07a649ea5c08ee3f9e4d743
