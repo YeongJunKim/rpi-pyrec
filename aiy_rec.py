@@ -18,25 +18,23 @@ class MyRec:
         self.proc = 0
 
     def record_start(self, cmd="sudo arecord -D sysdefault:CARD=0 -d 2 -r 16000 -f S16_LE /home/pi/temp3.wav"):
-        thread_ = threading.Thread(target=self.button_check())
+        self.thread_button_checker_exit = ButtonCheckAndExit(name="ButtonCheckAndExit")
+        self.thread_button_checker_exit.start()
+        self.thread_button_checker_exit.join(4)
+
+        # thread_ = threading.Thread(target=self.button())
+        # thread_.start()
         thread = threading.Thread(target=self.record(cmd))
-        thread_.start()
         thread.start()
+        thread.join(4)
 
     def record(self, cmd):
         self.logger.logger.debug("recording start")
         self.proc = subprocess.call(cmd, shell=True)
-
         self.logger.logger.debug("recording completed")
 
     def __exit__(self):
         self.logger.logger.debug("Exit REC drivers")
-
-    def button_check(self):
-        if GPIO.input(23) == 0:
-            sleep(1)
-            self.proc.kill()
-
 
 
 def main():
@@ -49,6 +47,15 @@ def main():
         led.set_color(led=(0xFF, 0xFF, 0xFF))
         rec.record_start()
         led.set_color(led=(0x00, 0x00, 0x00))
+
+
+class ButtonCheckAndExit(threading.Thread):
+    def run(self):
+        while True:
+            sleep(2)
+            if GPIO.input(23) == 1:
+                print(threading.currentThread().getName())
+                break
 
 
 if __name__ == '__main__':

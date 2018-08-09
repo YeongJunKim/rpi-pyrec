@@ -1,6 +1,5 @@
 # autor : colson (Yeong Jun Kim)
 # https://www.github.com/YeongJunKim
-
 import sys
 import aiy.audio
 from aiy_log import MyLogger
