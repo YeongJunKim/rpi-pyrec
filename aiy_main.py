@@ -11,19 +11,17 @@ import RPi.GPIO as GPIO
 from aiy_led import MyLed
 from aiy_log import MyLogger
 from aiy_play import MyAudio
-from test_code.aiy_thread_manager import ButtonCheck
 
-startFlag = 0
 GPIO.setmode(GPIO.BCM)
 
 button = aiy.voicehat.get_button()
 led = MyLed()
 play = MyAudio()
-logger = MyLogger(level=logging.DEBUG, get="MAIN")
+logger = MyLogger(level=logging.INFO, get="MAIN")
 
+startFlag = 0
 audio = 0
 stream = 0
-
 timeCnt = 0
 timeout = 0
 timerStart = 0
@@ -49,26 +47,10 @@ def checkstate():
     logger.logger.debug("timer_2")
     if startFlag == 0:
         led.set_color(led=(0xFF, 0x00, 0x00))
-        time.sleep(0.5)
+        time.sleep(0.2)
         led.set_color(led=(0x00, 0x00, 0x00))
+    threading.Timer(0.2, checkstate).start()
 
-    threading.Timer(1, checkstate).start()
-
-
-class ButtonCheck(threading.Thread):
-    class ButtonCheck(Exception):
-        pass
-
-    def run(self):
-        logger.logger.debug("button checker start")
-        time.sleep(2)
-        while True:
-            logger.logger.debug("checking...")
-            if GPIO.input(23) == 1:
-                self.raiser()
-
-    def raiser(self):
-        raise ButtonCheck.ButtonCheck()
 
 def stop_recording():
     global audio
@@ -84,6 +66,7 @@ def button_callback():
     if startFlag == 0:
         startFlag = 1
 
+
 def setup():
     global button
     timer()
@@ -91,20 +74,17 @@ def setup():
     button.on_press(button_callback)
 
 
+def find_audio_device():
+    po = pyaudio.PyAudio()
+    for index in range(po.get_device_count()):
+        desc = po.get_device_info_by_index(index)
+        print("DEVICE: %s  INDEX:  %s  RATE:  %s " % (desc["name"], index, int(desc["defaultSampleRate"])))
+
+
 def loop():
-    global startFlag
-    global audio
-    global stream
-    global timeExitFlag
-    global timeout
-    global timeCnt
-    global timerStart
+    global startFlag, audio, stream, timeExitFlag, timeout, timeCnt, timerStart
     while True:
         if startFlag == 1:
-            # po = pyaudio.PyAudio()
-            # for index in range(po.get_device_count()):
-            #     desc = po.get_device_info_by_index(index)
-            #     print("DEVICE: %s  INDEX:  %s  RATE:  %s " % (desc["name"], index, int(desc["defaultSampleRate"])))
 
             FORMAT = pyaudio.paInt16
             CHANNELS = 1
@@ -153,12 +133,12 @@ def loop():
             savefile.writeframes(b''.join(frames))
             savefile.close()
 
+            logger.logger.info(file + " is saved")
+
             stream.stop_stream()
             stream.close()
             audio.terminate()
-            #play.play_audio_text("thank you sir!")
-            play.play_audio_path(file)
-            logger.logger.debug("hello")
+            play.play_audio_text("thank you!")
 
             startFlag = 0
 

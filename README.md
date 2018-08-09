@@ -1,6 +1,27 @@
 
 # AIY-kit word save
 
+####installation
+######this project support AIY-Voice-kit
+
+```angular2html
+1. sudo pip3 install pyaudio
+```
+
+####run aiy_main.py
+######in project folder
+```angular2html
+python3.5 aiy_main.py
+```
+
+
+
+
+
+
+
+
+#---------------------------------
 ###### recording
 
 ### arecord

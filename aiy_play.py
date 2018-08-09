@@ -13,11 +13,9 @@ class MyAudio:
         logger.logger.debug("Init audio driver")
 
     def play_audio_path(self, path):
-        aiy.audio.set_tts_volume(5)
         aiy.audio.play_wave(path)
 
     def play_audio_text(self, text):
-        aiy.audio.set_tts_volume(5)
         aiy.audio.say(text)
 
 
