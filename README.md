@@ -1,29 +1,20 @@
-
 # AIY-kit word save
-
+######tupport raspberry pi zero w board wit AIY kit.
+![image](http://cdn.shopify.com/s/files/1/0176/3274/products/together-16_1024x1024_28d6a279-1133-4974-ba1a-03ea6e735a66_grande.jpg?v=1506698675)
 ####installation
-######this project support AIY-Voice-kit
-
+#### 1. install AIY-Voice-kit.
+###### ```AIY-Voice-kit``` img download.
+https://aiyprojects.withgoogle.com/voice/
+#### 2. install pip
 ```angular2html
-1. sudo pip3 install pyaudio
+sudo pip3 install pyaudio
 ```
-
-####run aiy_main.py
-######in project folder
+####3. run aiy_main.py
 ```angular2html
 python3.5 aiy_main.py
 ```
-
-
-
-
-
-
-
-
 #---------------------------------
 ###### recording
-
 ### arecord
 ```
 -q',
@@ -34,12 +25,10 @@ python3.5 aiy_main.py
 '-r',   str(sample_rate_hz)
 '-d',   sampling time
 ```
-
 ### arecord example
 ```
 ~$ sudo arecord -D sysdefault:CARD=0 -r 16000 -f S16_LE /home/pi/temp.wav
 ```
-
 ### sound %
 ```angular2html
 ~$ amixer set Master 20%
